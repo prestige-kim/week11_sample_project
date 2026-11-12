@@ -36,6 +36,7 @@ export default function CourseList() {
     })); 
   }
 
+  // Edit 기능
   function handleEdit(id, newName){
     setCourses(courses.map((course)=>{
       return course.id === id ? {...course, name: newName} : course;

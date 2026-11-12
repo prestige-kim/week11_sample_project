@@ -17,15 +17,16 @@ export default function CourseList() {
   function handleAdd(event) {
     event.preventDefault();
     // TODO: 빈 입력 검사, 새 과목 객체 생성, setCourses 호출, 입력창 초기화
-    if(event.target.value === ""){
-      value = "hello";
-      setNewName(event.target.value);
+    if(!(newName.trim())){
+      alert("과목명을 입력 해주세요.");
+      // 다시 focus 하는 방법?
     }
     else{
       setNewName(event.target.value);
       const newCourse = { id: courses.length + 1, name: newName, category: 'Elective', completed: false };
       setCourses([...courses, newCourse]); // 기존 객체 배열에 값을 추가하기 위해 스프레드 사용
     }
+    setNewName("");
   }
 
   // TODO 2 (필수): 완료 상태 변경 기능을 구현하세요.

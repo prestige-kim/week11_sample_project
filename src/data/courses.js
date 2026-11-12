@@ -5,5 +5,5 @@ export const initialCourses = [
   { id: 3, name: 'Computer Architecture and Organization', category: 'major', completed: false },
   { id: 4, name: 'Discrete Mathematics', category: 'Major', completed: false },
   { id: 5, name: 'English Reading and Composition', category: 'Elective', completed: true },
-  { id: 5, name: 'Engineering Writing', category: 'Elective', completed: false },
+  { id: 6, name: 'Engineering Writing', category: 'Elective', completed: false },
 ];

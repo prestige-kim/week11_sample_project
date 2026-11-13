@@ -14,13 +14,15 @@ npm run dev
 
 브라우저에 표시되는 Local URL에 접속하세요. 빌드 테스트: `npm run build`.
 
+![실행화면](image.png)
+
 # 3. Source Code Exploration: 주요 파일 3개, Component와 Props 관계, useState 및 Event 분석, 주요 코드 2개 설명
 - Project Structure: 주요 파일 3개의 역할
     1. App.jsx : 페이지 전체 레이아웃
-    2. CourseList.jsx : 
-    3. CourseItem.jsx
+    2. CourseList.jsx : 과목 리스트를 관리하는 부모 객체
+    3. CourseItem.jsx : 화면에 나오는 과목 목록을 관리하는 자식 객체
 
-- Component & Props: CourseList와 CourseItem의 관계 및 Props 전달 방식 <<<<완료>>>>
+- Component & Props: CourseList와 CourseItem의 관계 및 Props 전달 방식
     CourseList: 부모, CourseItem: 자식
     Props 전달 방식:
     >(부모) CourseList 에서 아래와 같은 방식으로 자식의 함수를 import 하여 자식에게 Props를 넘긴다. **
@@ -39,12 +41,41 @@ npm run dev
     function CourseItem({ course, onDelete, onToggle })
     ```
 - State & Event: useState를 이용한 상태 관리 및 삭제 버튼의 동작 원리
+    - CourseList 에서 전체 과목들을 courses 라는 상태 변수로 관리하고 새로운 과목을 추가할 때 newName 이라는 상태변수로 관리한다. 또한 수정할 때 수정 중일 때 html 요소와 수정 버튼을 저장 버튼으로 바꾸기 위해 사용되는 상태변수, 그리고 수정한 이름을 저장하는 상태 변수가 있다
+
+    - 삭제 버튼은 눌렀을 떄 전체 데이터 배열에서 삭제할 아이디를 가진 과목을 제외한 새로운 배열을 filter 로 만든다. 
 - Code Analysis: 주요 코드 2개(각 5~15줄)를 선택하여 동작 원리 설명
+1. 과목 추가 코드 : 빈 입력이 들어왔을 때 alert 으로 알린다. 올바른 과목명이 들어왔을 때 상태 변수 업데이트를 위해 html form 에서 일어난 event.target 의 value 를 새 과목명 상태변수에 저장한다. 그 후에 새로운 과목 객체를 만들어서 전체 과목을 관리하는 상태 변수에 업데이트 한다.
+```jsx
+function handleAdd(event) {
+    event.preventDefault();
+    // TODO: 빈 입력 검사, 새 과목 객체 생성, setCourses 호출, 입력창 초기화
+    if(!(newName.trim())){
+      alert("과목명을 입력해주세요.");
+    }
+    else{
+      setNewName(event.target.value);
+      const newCourse = { id: courses.length + 1, name: newName, category: 'Elective', completed: false };
+      setCourses([...courses, newCourse]); // 기존 객체 배열에 값을 추가하기 위해 스프레드 사용
+    }
+    setNewName("");
+  }    
+```
+2. 과목 completed 반전 코드 : 체크박스를 눌렀을 때 과목들을 하나씩 순환하여 체크박스를 누른 아이디의 과목을 찾는다. 찾은 과목을 스프레드를 이용해서 completed 속성을 반전시키고 아닌 과목은 그대로 반환할 수 있도록 map 을 사용한다. 
+```jsx
+  function handleToggle(id) {
+    // TODO: map과 spread(...)를 사용하여 해당 id의 completed를 반전
+    setCourses(courses.map((course) => {
+      return course.id === id ? {...course, completed: !course.completed} : course;
+    })); 
+  }
+
+```
 
 # 4. Customizing: 수정한 데이터, 텍스트, 스타일 및 파일명
     수정한 데이터: 실제 2학기 수강 중인 OSS, CV, CAO, DM, ERC, 이공계 글쓰기 과목으로 수정
     텍스트: 제목을 "수강신청 내역"으로 변경, 제목 아래 설명을 "2026학년도 2학기 22300089 김명성 수강신청 내역" 으로 변경
-    스타일: 전체 배경을 어둡게 바꿈, 제목 h1 에 color 를 추가해서 노란색으로 바꿈, My Courses 패널의 제목 색을 노란색으로 바꾸고 배경을 어둡게 바꿈, course # 색도 바꿈
+    스타일: 전체 배경을 어둡게 바꿈, 제목 h1 에 color 를 추가해서 노란색으로 바꿈, My Courses 패널의 제목 색을 청록색으로 바꾸고 배경을 어둡게 바꿈, course # 색도 바꿈
     파일명: App.jsx, courses.js, App.css
 
 # 5. Feature Extension: 구현한 기능 2개 이상, 주요 코드 및 동작 결과
